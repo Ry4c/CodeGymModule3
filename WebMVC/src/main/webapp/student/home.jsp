@@ -8,18 +8,16 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Home</title>
-<%--    <link rel="stylesheet"  href="D:\Java\Module3\Web\WebMVC\src\main\webapp\css\index.css">--%>
-    <style>
-        img {
-            width: 70px;
-            height: 70px;
-        }
-    </style>
+    <link rel="stylesheet"  href="/css/index.css" type="text/css">
 </head>
 <body>
 <a href="http://localhost:8080/students?action=create">Thêm mới sinh viên</a>
+<form action="http://localhost:8080/students?action=search" method="post">
+    <input placeholder="search" name="searchItem">
+    <button>Tìm Kiếm</button>
+</form>
 
-<table border="1">
+<table>
     <tr>
         <td>Id</td>
         <td>Name</td>
@@ -33,7 +31,7 @@
             <td>${student.age}</td>
             <td>${student.name}</td>
             <td><img src="${student.image}" alt=""></td>
-            <td>Sửa</td>
+            <td><a href="http://localhost:8080/students?action=edit&id=${student.id}">Sửa</a></td>
             <td><a href="http://localhost:8080/students?action=delete&id=${student.id}">Xóa</a></td>
         </tr>
     </c:forEach>

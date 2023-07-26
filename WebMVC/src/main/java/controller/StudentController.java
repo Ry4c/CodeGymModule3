@@ -23,11 +23,24 @@ public class StudentController extends HttpServlet {
             case "create":
                 showFormAdd(request, response);
                 break;
-            case "delete":deleteStudent(request, response);
+            case "delete":
+                deleteStudent(request, response);
                 break;
-
+            case "edit":
+                showFormEdit(request, response);
+                break;
         }
 
+    }
+
+
+    private void showFormEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        int index = studentService.findById(id);
+        request.setAttribute("student", studentService.findAll().get(index));
+        studentService.findAll().get(index);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("student/edit.jsp");
+        dispatcher.forward(request, response);
     }
 
     private void deleteStudent(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -56,8 +69,28 @@ public class StudentController extends HttpServlet {
             case "create":
                 createStudent(request, response);
                 break;
-
+            case "edit":
+                editStudent(request, response);
+                break;
+            case "search":
+                searchByName(request, response);
+                break;
         }
+    }
+
+    private void searchByName(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String name = request.getParameter("searchItem");
+        request.setAttribute("searchResult",studentService.searchByName(name));
+        RequestDispatcher dispatcher = request.getRequestDispatcher("student/searchResult.jsp");
+        dispatcher.forward(request, response);
+    }
+    private void editStudent(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        String name = request.getParameter("name");
+        int age = Integer.parseInt(request.getParameter("age"));
+        String image = request.getParameter("image");
+        studentService.edit(id, new Student(id, age, name, image));
+        response.sendRedirect("/students?action=findAll");
     }
 
     public void createStudent(HttpServletRequest request, HttpServletResponse response) throws IOException {
